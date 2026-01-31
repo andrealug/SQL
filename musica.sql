@@ -162,14 +162,19 @@ FROM artista a
 where a.`NOME` LIKE 'R%';
 
 -- 9. Visualizzate la media dei costi di tutte le registrazioni di un determinato artista
-SELECT ROUND(AVG(r.`COSTO`))
+SELECT ROUND(AVG(r.`COSTO`)) as media_costi
 FROM Artista a join registrazione r on a.id = r.idartista 
 where a.`COGNOME`=:COGNOME;
 
 -- 10. Visualizzate tutte le durate dei brani in ordine decrescente. Ciascuna durata deve essere 
 --visualizzata una sola volta.
-SELECT b.`DURATA`, b.`TITOLO`
-FROM Artista a join registrazione r on a.id = r.idartista 
-               join interpretare i on r.id=i.idregistrazione
-               join brano b on i.idbrano=b.id
+SELECT DISTINCT b.`DURATA`
+FROM brano b
 ORDER BY b.`DURATA` DESC;
+
+--(pontoriero)conoscere i cognomi degli artisti che hanno meno di due registrazioni
+SELECT COUNT(*) as N_Registrazioni, a.`COGNOME`
+FROM Artista a join registrazione r on a.id = r.idartista 
+GROUP BY a.`ID`
+HAVING N_Registrazioni<2
+
