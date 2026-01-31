@@ -134,7 +134,12 @@ FROM Artista a join registrazione r on a.id = r.idartista
 where b.TITOLO=:TITOLO
 
 -- 5. Individuare quali e quanti sono i brani appartenenti ad un determinato genere.
-SELECT count(b.`TITOLO`), b.`TITOLO`
+SELECT count(b.`TITOLO`)
+FROM  registrazione r JOIN interpretare i ON r.id = i.idregistrazione
+                      JOIN brano b ON i.idbrano = b.id
+WHERE r.`GENERE` = :genere
+UNION  --e forte per unire due query e 
+SELECT b.`TITOLO`
 FROM  registrazione r JOIN interpretare i ON r.id = i.idregistrazione
                       JOIN brano b ON i.idbrano = b.id
 WHERE r.`GENERE` = :genere
